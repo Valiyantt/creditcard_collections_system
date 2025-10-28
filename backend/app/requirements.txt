@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+SQLAlchemy>=1.4
+asyncpg
+alembic
+pydantic
+aioredis
+databases    # optional; we use SQLAlchemy directly; keep if you prefer
+python-dotenv
