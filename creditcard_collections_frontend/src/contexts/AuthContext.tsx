@@ -1,46 +1,47 @@
-import { createContext, useContext, useState, ReactNode } from "react"
+import { createContext, useContext, useState, ReactNode } from "react";
 
 interface User {
-  id: string
-  name: string
-  email: string
+  name: string;
+  email: string;
+  password: string;
 }
 
 interface AuthContextType {
-  user: User | null
-  login: (email: string, password: string) => Promise<void>
-  logout: () => void
+  user: User | null;
+  login: (email: string, password: string) => boolean;
+  logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const dummyUser: User = {
+  name: "Test User",
+  email: "test@example.com",
+  password: "Test1234", // <- your dummy password
+};
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  login: () => false,
+  logout: () => {},
+});
 
-  async function login(email: string, password: string) {
-    // Placeholder for backend call
-    if (email === "admin@example.com" && password === "password123") {
-      setUser({ id: "1", name: "Admin User", email })
-      localStorage.setItem("token", "mock_jwt_token")
-    } else {
-      throw new Error("Invalid credentials")
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<User | null>(dummyUser); // <- pre-populated
+
+  const login = (email: string, password: string) => {
+    if (email === dummyUser.email && password === dummyUser.password) {
+      setUser(dummyUser);
+      return true;
     }
-  }
+    return false;
+  };
 
-  function logout() {
-    setUser(null)
-    localStorage.removeItem("token")
-  }
+  const logout = () => setUser(null);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};
 
-export function useAuth() {
-  const context = useContext(AuthContext)
-  if (!context) throw new Error("useAuth must be used within AuthProvider")
-  return context
-}
+export const useAuth = () => useContext(AuthContext);
