@@ -1,27 +1,11 @@
-import { jsx as _jsx } from "react/jsx-runtime";
-import { AuthProvider } from "@/contexts/AuthContext";
-import Login from "@/pages/auth/Login";
-import Register from "@/pages/auth/Register";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import DashboardLayout from "@/layouts/DashboardLayout";
-import Overview from "@/pages/dashboard/Overview";
+import Dashboard from "@/pages/dashboard/Dashboard";
 import Collections from "@/pages/dashboard/Collections";
 import Reports from "@/pages/dashboard/Reports";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ReactDOM from "react-dom/client";
-import React from "react";
+import Settings from "@/pages/dashboard/Settings";
 import "./index.css";
-const router = createBrowserRouter([
-    { path: "/", element: _jsx(Login, {}) },
-    { path: "/login", element: _jsx(Login, {}) },
-    { path: "/register", element: _jsx(Register, {}) },
-    {
-        path: "/dashboard",
-        element: _jsx(DashboardLayout, {}),
-        children: [
-            { path: "", element: _jsx(Overview, {}) },
-            { path: "collections", element: _jsx(Collections, {}) },
-            { path: "reports", element: _jsx(Reports, {}) },
-        ],
-    },
-]);
-ReactDOM.createRoot(document.getElementById("root")).render(_jsx(React.StrictMode, { children: _jsx(AuthProvider, { children: _jsx(RouterProvider, { router: router }) }) }));
+ReactDOM.createRoot(document.getElementById("root")).render(_jsx(React.StrictMode, { children: _jsx(BrowserRouter, { children: _jsx(Routes, { children: _jsxs(Route, { path: "/", element: _jsx(DashboardLayout, {}), children: [_jsx(Route, { index: true, element: _jsx(Dashboard, {}) }), _jsx(Route, { path: "collections", element: _jsx(Collections, {}) }), _jsx(Route, { path: "reports", element: _jsx(Reports, {}) }), _jsx(Route, { path: "settings", element: _jsx(Settings, {}) })] }) }) }) }));

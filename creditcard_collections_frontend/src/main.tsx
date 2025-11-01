@@ -1,34 +1,25 @@
-import { AuthProvider } from "@/contexts/AuthContext"
-import Login from "@/pages/auth/Login"
-import Register from "@/pages/auth/Register"
-import DashboardLayout from "@/layouts/DashboardLayout"
-import Overview from "@/pages/dashboard/Overview"
-import Collections from "@/pages/dashboard/Collections"
-import Reports from "@/pages/dashboard/Reports"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import ReactDOM from "react-dom/client"
-import React from "react"
-import "./index.css"
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import DashboardLayout from "@/layouts/DashboardLayout";
+import Dashboard from "@/pages/dashboard/Dashboard";
+import Collections from "@/pages/dashboard/Collections";
+import Reports from "@/pages/dashboard/Reports";
+import Settings from "@/pages/dashboard/Settings";
 
-const router = createBrowserRouter([
-  { path: "/", element: <Login /> },
-  { path: "/login", element: <Login /> },
-  { path: "/register", element: <Register /> },
-  {
-    path: "/dashboard",
-    element: <DashboardLayout />,
-    children: [
-      { path: "", element: <Overview /> },
-      { path: "collections", element: <Collections /> },
-      { path: "reports", element: <Reports /> },
-    ],
-  },
-])
+import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<DashboardLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="collections" element={<Collections />} />
+          <Route path="reports" element={<Reports />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
-)
+);
